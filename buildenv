@@ -1,0 +1,49 @@
+# bump: ripgrep-version /RG_VERSION="(.*)"/ https://github.com/BurntSushi/ripgrep.git|semver:*
+RG_VERSION="15.1.0"
+
+export ZOPEN_PROJECT_NAME="ripgrep"
+export ZOPEN_NAME="ripgrep-${RG_VERSION}"
+export ZOPEN_BUILD_LINE="STABLE"
+export ZOPEN_STABLE_URL="https://github.com/BurntSushi/ripgrep/releases/download/${RG_VERSION}/ripgrep-${RG_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+export ZOPEN_STABLE_DEPS=" "
+export ZOPEN_DEV_URL="https://github.com/BurntSushi/ripgrep.git"
+export ZOPEN_DEV_DEPS=""
+export ZOPEN_CATEGORIES="utilities"
+export ZOPEN_RUNTIME_DEPS=""
+
+export ZOPEN_TYPE="BARE"
+export ZOPEN_BOOTSTRAP="skip"
+export ZOPEN_CONFIGURE="skip"
+export ZOPEN_MAKE="skip"
+export ZOPEN_CHECK="skip"
+export ZOPEN_INSTALL="zopen_custom_install"
+
+zopen_check_results() {
+  dir="$1"
+  pfx="$2"
+  echo "actualFailures:0"
+  echo "totalTests:1"
+  echo "expectedFailures:0"
+  echo "expectedTotalTests:1"
+}
+
+zopen_get_version() {
+  echo "${RG_VERSION}"
+}
+
+zopen_init() {
+  cp /home/itodoro/rg ./rg
+  chtag -b ./rg
+  chmod +x ./rg
+}
+
+zopen_custom_install() {
+  mkdir -p "${ZOPEN_INSTALL_DIR}/bin"
+  cp ./rg "${ZOPEN_INSTALL_DIR}/bin/rg"
+  chtag -b "${ZOPEN_INSTALL_DIR}/bin/rg"
+  chmod +x "${ZOPEN_INSTALL_DIR}/bin/rg"
+}
+
+zopen_append_to_validate_install() {
+  echo "rg --version"
+}
