@@ -4,7 +4,9 @@ RG_VERSION="15.1.0"
 export ZOPEN_PROJECT_NAME="ripgrep"
 export ZOPEN_NAME="ripgrep-${RG_VERSION}"
 export ZOPEN_BUILD_LINE="STABLE"
-export ZOPEN_STABLE_URL="https://github.com/BurntSushi/ripgrep/releases/download/${RG_VERSION}/ripgrep-${RG_VERSION}-x86_64-unknown-linux-musl.tar.gz"
+export ZOPEN_STABLE_URL="https://github.com/BurntSushi/ripgrep.git"
+export ZOPEN_STABLE_TAG="${RG_VERSION}"
+export ZOPEN_STABLE_TYPE="GIT"
 export ZOPEN_STABLE_DEPS=" "
 export ZOPEN_DEV_URL="https://github.com/BurntSushi/ripgrep.git"
 export ZOPEN_DEV_DEPS=""
@@ -31,6 +33,9 @@ zopen_get_version() {
   echo "${RG_VERSION}"
 }
 
+# The z/OS binary was cross-compiled from source on a Linux-on-Z host
+# targeting s390x-ibm-zos using the Rust cross-compilation toolchain.
+# See: https://github.com/zopencommunity/ripgrepport/blob/main/README.md
 zopen_init() {
   cp /home/itodoro/rg ./rg
   chtag -b ./rg
