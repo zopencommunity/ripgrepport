@@ -25,7 +25,7 @@ rg -l 'TODO'         # list files containing TODO
 # How this port was built
 
 `ripgrep` is written in Rust. Because the Rust toolchain is not yet natively
-available on z/OS, this port was **cross-compiled** on a Linux-on-Z (LoP) host
+available on z/OS, this port was **cross-compiled** on a Linux-on-Power (LoP, ppc64le) host
 using an IBM-internal Rust cross-compilation toolchain targeting `s390x-ibm-zos`.
 
 The cross-compilation infrastructure and all required patches to upstream Rust

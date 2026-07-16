@@ -34,12 +34,13 @@ zopen_get_version() {
 }
 
 # The z/OS binary was cross-compiled from source (BurntSushi/ripgrep 15.1.0) on
-# a Linux-on-Z (LoP) host using an IBM-internal Rust cross-compiler targeting
+# a Linux-on-Power (LoP, ppc64le) host using an IBM-internal Rust cross-compiler targeting
 # s390x-ibm-zos. The Rust toolchain is not yet natively available on z/OS.
 # Cross-compilation infrastructure and crate patches:
 #   https://github.ibm.com/compiler/rust-scripts  branch: itodorov/zos-cross-compile-setup
 zopen_init() {
-  cp /home/itodoro/rg ./rg
+  curl -L -o rg \
+    https://github.com/zopencommunity/ripgrepport/releases/download/v${RG_VERSION}/rg
   chtag -b ./rg
   chmod +x ./rg
 }
