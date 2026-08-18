@@ -1,0 +1,40 @@
+--- /dev/null
++++ b/zos_stubs.c
+@@ -0,0 +1,37 @@
++/* z/OS stub implementations for madvise, mlock, munlock, preadv, pwritev.
++ * These syscalls do not exist on z/OS; provide no-ops so that
++ * crates using them via libc can link.
++ * The caller is expected to check errno == ENOSYS or treat the
++ * return value as an ignorable hint (which madvise always is). */
++#include <sys/types.h>
++#include <sys/uio.h>
++#include <errno.h>
++
++int madvise(void *addr, size_t len, int advice) {
++    (void)addr; (void)len; (void)advice;
++    return 0;
++}
++
++int mlock(const void *addr, size_t len) {
++    (void)addr; (void)len;
++    errno = ENOSYS;
++    return -1;
++}
++
++int munlock(const void *addr, size_t len) {
++    (void)addr; (void)len;
++    errno = ENOSYS;
++    return -1;
++}
++
++ssize_t preadv(int fd, const struct iovec *iov, int iovcnt, off_t offset) {
++    (void)fd; (void)iov; (void)iovcnt; (void)offset;
++    errno = ENOSYS;
++    return -1;
++}
++
++ssize_t pwritev(int fd, const struct iovec *iov, int iovcnt, off_t offset) {
++    (void)fd; (void)iov; (void)iovcnt; (void)offset;
++    errno = ENOSYS;
++    return -1;
++}

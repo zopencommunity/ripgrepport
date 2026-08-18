@@ -1,0 +1,11 @@
+--- /dev/null
++++ b/build.rs
+@@ -0,0 +1,8 @@
++fn main() {
++    // On z/OS, madvise/mlock/munlock don't exist in libc; compile no-op stubs.
++    if std::env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("zos") {
++        cc::Build::new()
++            .file("zos_stubs.c")
++            .compile("zos_mman_stubs");
++    }
++}

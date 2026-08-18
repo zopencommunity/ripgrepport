@@ -1,0 +1,24 @@
+25a26,27
+>     println!("cargo:rerun-if-env-changed=PCRE2_LIB_DIR");
+>     println!("cargo:rerun-if-env-changed=PCRE2_INCLUDE_DIR");
+27a30,49
+> 
+>     // If PCRE2_LIB_DIR is set, use the prebuilt library directly without
+>     // attempting to compile from source.  This is useful for cross-compilation
+>     // targets (e.g. s390x-ibm-zos) where the bundled JIT code does not build.
+>     let target_env = target.replace('-', "_");
+>     let lib_dir = std::env::var(format!("PCRE2_LIB_DIR_{}", target_env))
+>         .or_else(|_| std::env::var("PCRE2_LIB_DIR"))
+>         .ok();
+>     let include_dir = std::env::var(format!("PCRE2_INCLUDE_DIR_{}", target_env))
+>         .or_else(|_| std::env::var("PCRE2_INCLUDE_DIR"))
+>         .ok();
+>     if let Some(lib) = lib_dir {
+>         println!("cargo:rustc-link-search=native={}", lib);
+>         println!("cargo:rustc-link-lib=static=pcre2-8");
+>         if let Some(inc) = include_dir {
+>             println!("cargo:include={}", inc);
+>         }
+>         return;
+>     }
+> 
